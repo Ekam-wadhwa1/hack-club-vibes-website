@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Ekam Wadhwa - Student, Maker, and Hack Clubber. Portfolio and social links for web development, embedded electronics, photography, and graphic design."
+    />
+    <meta name="author" content="Ekam Wadhwa" />
+    <meta property="og:title" content="Ekam Wadhwa | Portfolio" />
+    <meta
+      property="og:description"
+      content="Student & Maker specializing in web development, embedded electronics, and visual design."
+    />
+    <meta property="og:type" content="website" />
+
+    <title>ekam.links</title>
+
+    <!-- CSS Stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Floating animated background blobs -->
+    <div class="bg-glow-container" aria-hidden="true">
+      <div class="glow-blob blob1"></div>
+      <div class="glow-blob blob2"></div>
+      <div class="glow-blob blob3"></div>
+    </div>
+
+    <!-- Interactive cursor background glow -->
+    <div class="cursor-highlight" id="cursorHighlight" aria-hidden="true"></div>
+
+    <!-- Main glass container -->
+    <main class="portfolio-card" id="portfolioCard">
+      <!-- Skeleton Loader (shows while loading) -->
+      <div id="skeletonLoader" class="skeleton-container">
+        <div class="skeleton-avatar"></div>
+        <div class="skeleton-name"></div>
+        <div class="skeleton-badges">
+          <div class="skeleton-badge"></div>
+          <div class="skeleton-badge"></div>
+          <div class="skeleton-badge"></div>
+        </div>
+        <div class="skeleton-tagline"></div>
+        
+        <div class="skeleton-section-title"></div>
+        <div class="skeleton-skills">
+          <div class="skeleton-skill"></div>
+          <div class="skeleton-skill"></div>
+          <div class="skeleton-skill"></div>
+        </div>
+        
+        <div class="skeleton-section-title"></div>
+        <div class="skeleton-links">
+          <div class="skeleton-link"></div>
+          <div class="skeleton-link"></div>
+          <div class="skeleton-link"></div>
+          <div class="skeleton-link"></div>
+        </div>
+        
+        <div class="skeleton-footer">
+          <div class="skeleton-footer-line1"></div>
+          <div class="skeleton-footer-line2"></div>
+        </div>
+      </div>
+
+      <!-- Real Portfolio Content (hidden initially) -->
+      <div id="portfolioContent" style="display: none; opacity: 0; transition: opacity 0.5s ease;">
+        <!-- Profile Header -->
+        <header class="profile-header">
+          <div class="avatar-container">
+            <div class="avatar-glow" id="avatarGlow"></div>
+            <div class="avatar" id="avatarContainer">
+              <!-- Local custom avatar -->
+              <img
+                id="avatarImg"
+                src="avatar/avatar.png"
+                alt="Avatar"
+                style="width: 100%; height: 100%; object-fit: cover"
+              />
+            </div>
+          </div>
+
+          <h1 class="name" id="nameTitle">Ekam Wadhwa</h1>
+
+          <div class="badge-row" id="badgeRow">
+            <!-- Dynamic Badges -->
+          </div>
+
+          <p class="tagline" id="taglineText">
+            hi, i'm ekam wadhwa, a student constantly upgrading his skills
+          </p>
+        </header>
+
+        <!-- Interactive Skills Showcase -->
+        <section class="skills-container" aria-label="Skills & Capabilities">
+          <h2 class="section-title">What can I Do?</h2>
+          <div class="skills-grid" id="skillsGrid">
+            <!-- Dynamic Skills -->
+          </div>
+        </section>
+
+        <!-- Social Links (Linktree Core) -->
+        <section class="links-container" aria-label="Social Links" id="linksContainer">
+          <!-- Dynamic Links -->
+        </section>
+
+        <!-- Footer -->
+        <footer class="portfolio-footer" id="portfolioFooter">
+          <!-- Dynamic Footer -->
+        </footer>
+      </div>
+    </main>
+
+    <!-- JS Logic -->
+    <script src="script.js"></script>
+  </body>
+</html>
