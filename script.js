@@ -58,7 +58,7 @@ const DEFAULT_STATE = {
     {
       id: "email",
       text: "Email Me",
-      url: "mailto:ekamwadhwa2004@gmail.com?",
+      url: "mailto:ekamwadhwa2004@gmail.com?cc=hi&subject=hello%20there&body=i%20saw%20your%20website%20i%20rate%20it%20%20%20%2F10",
       type: "email",
       icon: "email"
     },
