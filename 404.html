@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 - System Error</title>
+    <link rel="stylesheet" href="404.css" />
+  </head>
+  <body>
+    <!-- Floating animated background blobs (matching portfolio) -->
+    <div class="bg-glow-container" aria-hidden="true">
+      <div class="glow-blob blob1"></div>
+      <div class="glow-blob blob2"></div>
+      <div class="glow-blob blob3"></div>
+    </div>
+
+    <!-- Subtle scanline overlay -->
+    <div class="crt-overlay"></div>
+
+    <div class="terminal-window">
+      <!-- Terminal Window Title Bar -->
+      <div class="terminal-header">
+        <div class="header-buttons">
+          <span class="btn close"></span>
+          <span class="btn minimize"></span>
+          <span class="btn maximize"></span>
+        </div>
+        <div class="header-title">system_override.sh - 80x24</div>
+      </div>
+
+      <!-- Terminal Body -->
+      <div class="terminal-body" id="terminalBody">
+        <div class="log-line text-muted">SYSTEM BOOT SEQUENCE COMPLETE...</div>
+        <div class="log-line text-muted">CONNECTING TO GATEWAY [NEXUS-NODE-01]...</div>
+        <div class="log-line text-warning">[WARNING] GATEWAY CONNECTED but target route was not resolved.</div>
+        <div class="log-line text-error">HTTP ERROR 404: ROUTE_NOT_FOUND (Page Not Found)</div>
+        <div class="log-line">The requested resource could not be located on this terminal node.</div>
+        <div class="log-line text-cyan">--------------------------------------------------</div>
+        <div class="log-line">To return to main portfolio, type 'portfolio' and press Enter.</div>
+        <div class="log-line">To unlock system configuration console, enter credentials below.</div>
+        <div class="log-line text-cyan">--------------------------------------------------</div>
+        <br />
+        <div id="consoleHistory"></div>
+        <div class="input-line">
+          <span class="prompt">visitor@nexus:~$</span>
+          <div class="input-container">
+            <span id="inputText"></span><span class="cursor"></span>
+          </div>
+          <!-- Hidden input field to capture mobile keystrokes easily -->
+          <input type="text" id="hiddenInput" autocomplete="off" autofocus />
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const hiddenInput = document.getElementById('hiddenInput');
+      const inputText = document.getElementById('inputText');
+      const consoleHistory = document.getElementById('consoleHistory');
+      const terminalBody = document.getElementById('terminalBody');
+
+      // Focus input on window click
+      document.addEventListener('click', () => {
+        hiddenInput.focus();
+      });
+
+      // Maintain input text sync
+      hiddenInput.addEventListener('input', (e) => {
+        inputText.textContent = e.target.value;
+        scrollToBottom();
+      });
+
+      // Function to auto scroll to bottom
+      function scrollToBottom() {
+        terminalBody.scrollTop = terminalBody.scrollHeight;
+      }
+
+      // Command history queue
+      const history = [];
+
+      // Key listeners
+      hiddenInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const rawCommand = hiddenInput.value;
+          const command = rawCommand.trim();
+          hiddenInput.value = '';
+          inputText.textContent = '';
+          
+          if (command !== '') {
+            history.push(command);
+          }
+          
+          handleCommand(command);
+          scrollToBottom();
+        }
+      });
+
+      // Get saved password from localstorage
+      function getAdminPassword() {
+        return localStorage.getItem('portfolioPassword') || 'nexus2026';
+      }
+
+      // Handle terminal commands
+      function handleCommand(cmd) {
+        // Output prompt and command to history
+        appendHistoryLine(`visitor@nexus:~$ ${cmd}`, 'user-cmd');
+
+        const cleanCmd = cmd.toLowerCase().trim();
+        const adminPass = getAdminPassword();
+
+        if (cmd === adminPass) {
+          appendHistoryLine('ACCESS GRANTED. Overriding system lock...', 'success-text');
+          appendHistoryLine('Loading console configurations...', 'text-muted');
+          
+          // Progress bar animation
+          let progress = 0;
+          const progressLine = appendHistoryLine('[                    ] 0%', 'progress-line');
+          
+          hiddenInput.disabled = true;
+          
+          const interval = setInterval(() => {
+            progress += 10;
+            const barWidth = progress / 5;
+            const filled = '='.repeat(barWidth);
+            const empty = ' '.repeat(20 - barWidth);
+            progressLine.textContent = `[${filled}${empty}] ${progress}%`;
+            
+            if (progress >= 100) {
+              clearInterval(interval);
+              appendHistoryLine('Redirecting to dashboard...', 'success-text');
+              setTimeout(() => {
+                window.location.href = 'edit.html';
+              }, 400);
+            }
+          }, 150);
+          return;
+        }
+
+        switch (cleanCmd) {
+          case '':
+            break;
+          case 'help':
+            appendHistoryLine('Available Commands:', 'text-cyan');
+            appendHistoryLine('  portfolio   - Navigate back to the portfolio homepage.');
+            appendHistoryLine('  about       - Get info about this terminal node.');
+            appendHistoryLine('  clear       - Clear screen logs.');
+            appendHistoryLine('  [password]  - Enter override password directly to login.');
+            break;
+          case 'portfolio':
+            appendHistoryLine('Navigating to homepage...', 'text-muted');
+            setTimeout(() => {
+              window.location.href = 'index.html';
+            }, 500);
+            break;
+          case 'about':
+            appendHistoryLine('Nexus OS v4.0.4-LTS', 'text-cyan');
+            appendHistoryLine('Authorized Operator: Ekam Wadhwa');
+            appendHistoryLine('Secure key validation active.');
+            break;
+          case 'clear':
+            consoleHistory.innerHTML = '';
+            break;
+          default:
+            appendHistoryLine(`command not found: ${cmd}. Type 'help' for commands.`, 'text-error');
+        }
+      }
+
+      function appendHistoryLine(text, className = '') {
+        const line = document.createElement('div');
+        line.className = `log-line ${className}`;
+        line.textContent = text;
+        consoleHistory.appendChild(line);
+        return line;
+      }
+
+      // Key shortcut check: Ctrl+Alt+Shift redirects back to portfolio home
+      window.addEventListener('keydown', (e) => {
+        if (e.altKey && e.ctrlKey && e.shiftKey) {
+          e.preventDefault();
+          window.location.href = 'index.html';
+        }
+      });
+    </script>
+  </body>
+</html>
